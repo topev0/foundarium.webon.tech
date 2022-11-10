@@ -28,6 +28,7 @@ class UserController extends Controller
             return response()->json(['status' => 'error', 'errors' => $validator->errors()]);
 
         $user = User::where('id', $r->id)->first();
+        $user->car = Car::where('driver_id', $user->id)->first();
 
         return response()->json(['status' => 'success', 'user' => $user]);
     }
@@ -76,20 +77,5 @@ class UserController extends Controller
         User::where('id', $r->id)->delete();
 
         return response()->json(['status' => 'success']);
-    }
-
-    public function isDriving(Request $r)
-    {
-        $validator = Validator::make($r->all(), [
-            'id' => 'required|int|exists:App\User,id'
-        ]);
-
-        if($validator->fails())
-            return response()->json(['status' => 'error', 'errors' => $validator->errors()]);
-
-        $user = User::where('id', $r->id)->first();
-        $user->car = Car::where('driver_id', $user->id)->first();
-
-        return response()->json(['status' => 'success', 'data' => $user]);
     }
 }

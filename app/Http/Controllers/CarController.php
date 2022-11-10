@@ -55,7 +55,7 @@ class CarController extends Controller
     {
         $validator = Validator::make($r->all(), [
             'id' => 'required|int|exists:App\Car,id',
-            'driver_id' => 'nullable|int|exist:App\User,id'
+            'driver_id' => 'nullable|int|exists:App\User,id|unique:App\Car,driver_id'
         ]);
 
         if($validator->fails())
@@ -84,22 +84,5 @@ class CarController extends Controller
         Car::where('id', $r->id)->delete();
 
         return response()->json(['status' => 'success']);
-    }
-
-    public function driverSet(Request $r)
-    {
-        $validator = Validator::make($r->all(), [
-            'car_id' => 'required|int|exists:App\Car,id',
-            'driver_id' => 'required|int|exists:App\User,id|unique:App\Car,driver_id'
-        ]);
-
-        if($validator->fails())
-            return response()->json(['status' => 'error', 'errors' => $validator->errors()]);
-
-        $car = ['driver_id' => $r->driver_id];
-        $car = Car::where('id', $r->car_id)->update($car);
-        $car = Car::where('id', $r->car_id)->first();
-
-        return response()->json(['status' => 'success', 'car' => $car]);
     }
 }
