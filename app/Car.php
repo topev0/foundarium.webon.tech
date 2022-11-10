@@ -4,11 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class User extends Model
+class Car extends Model
 {
-    protected $table = 'users';
+    protected $table = 'cars';
 
-    protected $fillable = ['id', 'name'];
+    protected $fillable = ['id', 'driver_id'];
 
     public $timestamps = false;
 }
